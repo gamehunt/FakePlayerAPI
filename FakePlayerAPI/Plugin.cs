@@ -48,6 +48,7 @@ namespace FakePlayerAPI
 
                 Handlers.Server.RoundStarted += EventHandlers.OnRoundStart;
                 Handlers.Server.RoundEnded += EventHandlers.OnRoundEnd;
+                Handlers.Server.WaitingForPlayers += EventHandlers.OnWaitingForPlayers;
 
                 Log.Info($"{Name} plugin loaded. @gamehunt");
             }
@@ -64,6 +65,7 @@ namespace FakePlayerAPI
 
             Handlers.Server.RoundStarted -= EventHandlers.OnRoundStart;
             Handlers.Server.RoundEnded -= EventHandlers.OnRoundEnd;
+            Handlers.Server.WaitingForPlayers -= EventHandlers.OnWaitingForPlayers;
 
             Instance = null;
             Harmony = null;

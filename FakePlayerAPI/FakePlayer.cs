@@ -147,10 +147,10 @@ namespace FakePlayerAPI
             processor.NetworkPlayerId = QueryProcessor._idIterator++;
 
 
-            ccm.CurClass = RoleType.Tutorial;
+            ccm.CurClass = role;
             ccm._privUserId = null;
             ccm.UserId2 = null;
-            obj.GetComponent<PlayerStats>().SetHPAmount(ccm.Classes.SafeGet(RoleType.Tutorial).maxHP);
+            obj.GetComponent<PlayerStats>().SetHPAmount(ccm.Classes.SafeGet(role).maxHP);
 
             obj.GetComponent<NicknameSync>().Network_myNickSync = "Fake Player";
 

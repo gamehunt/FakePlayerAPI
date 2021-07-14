@@ -29,10 +29,10 @@ namespace FakePlayerAPI.Harmony
                 const int continueLabelOffset = -5;
                 int continueLabelIndex = newInstructions.FindLastIndex(inst => inst.opcode == OpCodes.Constrained) + continueLabelOffset;
 
-                Log.Debug($"continueLabelIndex: {continueLabelIndex}", Plugin.Instance.Config.VerboseOutput);
-
                 if (continueLabelIndex - continueLabelOffset != -1)
                 {
+                    Log.Debug($"continueLabelIndex: {continueLabelIndex}", Plugin.Instance.Config.VerboseOutput);
+
                     var continueLabel = newInstructions[continueLabelIndex].labels.FirstOrDefault();
 
                     newInstructions.InsertRange(ccmGetOffset, new[]

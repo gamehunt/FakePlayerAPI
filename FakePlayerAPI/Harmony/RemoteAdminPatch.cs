@@ -46,16 +46,17 @@ namespace FakePlayerAPI.Harmony
                 }
             }
 
-            Log.Debug($"loopStartIndex: {loopStartIndex}", Plugin.Instance.Config.VerboseOutput);
-
             if (loopStartIndex != -1)
             {
+                Log.Debug($"loopStartIndex: {loopStartIndex}", Plugin.Instance.Config.VerboseOutput);
+
                 const int endIndexOffset = 14;
                 int endIndex = newInstructions.FindLastIndex(inst => inst.opcode == OpCodes.Ldstr && inst.operand.ToString() == ";") + endIndexOffset;
-                Log.Debug($"endIndex: {endIndex}", Plugin.Instance.Config.VerboseOutput);
 
                 if(endIndex != endIndexOffset - 1)
                 {
+                    Log.Debug($"endIndex: {endIndex}", Plugin.Instance.Config.VerboseOutput);
+
                     var goVar = generator.DeclareLocal(typeof(GameObject));
                     var skipLabel2 = generator.DefineLabel();
                     var loopRetLabel = generator.DefineLabel();

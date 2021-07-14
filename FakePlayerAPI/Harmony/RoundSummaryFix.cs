@@ -19,17 +19,17 @@ namespace FakePlayerAPI.Harmony
             RoundSummary roundSummary = instance;
             while (roundSummary != null)
             {
-                int count = PlayerManager.players.Count - FakePlayerAPI.FakePlayer.Dictionary.Keys.Count;
+                int count = PlayerManager.players.Count - FakePlayer.Dictionary.Keys.Count;
                 while (RoundSummary.RoundLock || !RoundSummary.RoundInProgress() || ((roundSummary._keepRoundOnOne && count < 2)))
                 {
-                    if (count == 0 && FakePlayerAPI.FakePlayer.Dictionary.Keys.Count > 0)
+                    if (count == 0 && FakePlayer.Dictionary.Keys.Count > 0)
                     {
-                        foreach (FakePlayerAPI.FakePlayer n in FakePlayerAPI.FakePlayer.List)
+                        foreach (FakePlayer n in FakePlayer.List)
                         {
                             n.Kill(false);
                         }
                     }
-                    count = PlayerManager.players.Count - FakePlayerAPI.FakePlayer.Dictionary.Keys.Count;
+                    count = PlayerManager.players.Count - FakePlayer.Dictionary.Keys.Count;
                     yield return 0.0f;
                 }
                 yield return 0.0f;
@@ -38,7 +38,7 @@ namespace FakePlayerAPI.Harmony
                 {
                     if (!(player == null))
                     {
-                        FakePlayerAPI.FakePlayer npc = FakePlayerAPI.FakePlayer.Get(player);
+                        FakePlayer npc = FakePlayer.Get(player);
                         if (npc == null || npc.AffectEndConditions)
                         {
                             CharacterClassManager component = player.GetComponent<CharacterClassManager>();
