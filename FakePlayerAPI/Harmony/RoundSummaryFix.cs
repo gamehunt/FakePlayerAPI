@@ -26,7 +26,7 @@ namespace FakePlayerAPI.Harmony
                     {
                         foreach (FakePlayer n in FakePlayer.List)
                         {
-                            n.Kill(false);
+                            n.Kill();
                         }
                     }
                     count = PlayerManager.players.Count - FakePlayer.Dictionary.Keys.Count;

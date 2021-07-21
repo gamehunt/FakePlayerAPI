@@ -38,24 +38,33 @@ namespace FakePlayerAPI
 
         public void OnRoundStart()
         {
+#if true
             MEC.Timing.CallDelayed(0.5f, () =>
             {
                 try
                 {
-                    FakePlayer.Create<TestFakePlayer>(Player.List.FirstOrDefault()?.Position ?? Vector3.zero, RoleType.Tutorial);
+                    FakePlayer.Create<ExampleFakePlayer>(Player.List.FirstOrDefault()?.Position ?? Vector3.zero, RoleType.Tutorial);
                 }catch(Exception e)
                 {
                     Log.Error($"Exception caught: {e}");
                 }
             });
-            
+#endif       
         }
 
         public void OnRoundEnd(RoundEndedEventArgs ev)
         {
             foreach (FakePlayer npc in FakePlayer.List)
             {
-                npc.Kill(false);
+                npc.Kill();
+            }
+        }
+
+        public void OnDeath(DiedEventArgs ev)
+        {
+            if (ev.Target.IsFakePlayer())
+            {
+                ev.Target.AsFakePlayer().Kill();
             }
         }
     }

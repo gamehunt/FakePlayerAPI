@@ -1,48 +1,42 @@
-﻿using HarmonyLib;
+﻿using Exiled.API.Features;
+using HarmonyLib;
 using Mirror;
+using NorthwoodLib.Pools;
 using System;
+using System.Collections.Generic;
+using System.Reflection.Emit;
 using UnityEngine;
 
 namespace FakePlayerAPI.Harmony
 {
     [HarmonyPatch(typeof(NetworkBehaviour), nameof(NetworkBehaviour.SendTargetRPCInternal))]
-    [HarmonyPriority(Priority.Last)]
     internal class MirrorPatch
     {
-        private static bool Prefix(NetworkBehaviour __instance, NetworkConnection conn, Type invokeClass, string rpcName, NetworkWriter writer, int channelId)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            if (!NetworkServer.active)
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            const int ldarg1Offset = 2;
+            int ldarg1Index = newInstructions.FindIndex(op => op.opcode == OpCodes.Ldarg_0) + ldarg1Offset;
+
+            Log.Debug($"ldarg1Index: {ldarg1Index}");
+
+            var skipLabel = generator.DefineLabel();
+
+            newInstructions[ldarg1Index] = newInstructions[ldarg1Index].WithLabels(skipLabel);
+
+            newInstructions.InsertRange(ldarg1Index, new[]
             {
-                Debug.LogError("TargetRPC Function " + rpcName + " called on client.");
-                return false;
-            }
-            if (conn == null)
-            {
-                conn = __instance.connectionToClient;
-                if (conn == null)
-                {
-                    return false;
-                }
-            }
-            if (conn is ULocalConnectionToServer)
-            {
-                Debug.LogError("TargetRPC Function " + rpcName + " called on connection to server");
-                return false;
-            }
-            if (!__instance.isServer)
-            {
-                Debug.LogWarning("TargetRpc " + rpcName + " called on un-spawned object: " + __instance.name);
-                return false;
-            }
-            RpcMessage msg = new RpcMessage
-            {
-                netId = __instance.netId,
-                componentIndex = __instance.ComponentIndex,
-                functionHash = NetworkBehaviour.GetMethodHash(invokeClass, rpcName),
-                payload = writer.ToArraySegment()
-            };
-            conn.Send<RpcMessage>(msg, channelId);
-            return false;
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Brtrue_S, skipLabel),
+                new CodeInstruction(OpCodes.Pop),
+                new CodeInstruction(OpCodes.Ret)
+            });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

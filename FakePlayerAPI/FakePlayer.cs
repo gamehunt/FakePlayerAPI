@@ -71,17 +71,19 @@ namespace FakePlayerAPI
         /// </summary>
         public bool IsValid { get; set; } = false;
 
-        public void Kill(bool spawn_ragdoll)
+        /// <summary>
+        /// Called after FinishInitialization(), when this instance fully initialized
+        /// </summary>
+        public abstract void OnPostInitialization();
+        public abstract void OnPreInitialization();
+
+        public void Kill()
         {
             if (IsValid)
             {
                 IsValid = false;
                 Log.Debug($"kill() called in FakePlayer {GetIdentifier()}", Plugin.Instance.Config.VerboseOutput);
-                if (spawn_ragdoll)
-                {
-                    gameObject.GetComponent<RagdollManager>().SpawnRagdoll(gameObject.transform.position, gameObject.transform.rotation, Vector3.zero, (int)PlayerInstance.Role, new PlayerStats.HitInfo(), false, "", GetIdentifier(), 9999);
-                }
-                UnityEngine.Object.Destroy(PlayerInstance.GameObject);
+                Destroy(PlayerInstance.GameObject);
             }
         }
 
@@ -120,18 +122,45 @@ namespace FakePlayerAPI
             Dictionary.Add(gameObject, this);
         }
 
-        public void FinishInitialization()
+        private static IEnumerator<float> FinishInstanceCreationCoroutine(GameObject obj, Vector3 position)
         {
+            yield return Timing.WaitForSeconds(0.1f);
+            CharacterClassManager ccm = obj.GetComponent<CharacterClassManager>();
+            FakePlayer fake_player = obj.GetComponent<FakePlayer>();
             try
             {
-                PlayerInstance = Player.Get(gameObject);
-                Log.Debug($"Constructed FakePlayer {GetIdentifier()}", Plugin.Instance.Config.VerboseOutput);
-                IsValid = true;
+                fake_player.OnPreInitialization();
+
+                Player.UnverifiedPlayers.TryGetValue(ccm._hub, out Player ply_obj);
+                Player.Dictionary.Add(obj, ply_obj);
+                ply_obj.IsVerified = true;
+
+                string prefs = "";
+                for (int i = 0; i < ply_obj.ReferenceHub.weaponManager.weapons.Length; i++)
+                {
+                    prefs += i == 0? "0:0:0" : "#0:0:0";
+                }
+
+                ply_obj.ReferenceHub.weaponManager.CallCmdChangeModPreferences(prefs);
+
+                fake_player.PlayerInstance = ply_obj;
+                fake_player.PlayerInstance.ReferenceHub.transform.localScale = Vector3.one;
+                fake_player.PlayerInstance.SessionVariables.Add("IsFakePlayer", true);
+                fake_player.IsValid = true;
+
+                fake_player.OnPostInitialization();
+
+                Log.Debug($"Constructed FakePlayer {fake_player.GetIdentifier()}", Plugin.Instance.Config.VerboseOutput);
             }
             catch (Exception e)
             {
-                Log.Error($"Exception in init finalizer: {e}");
+                Log.Error(e);
             }
+
+            yield return Timing.WaitForSeconds(0.3f);
+
+            fake_player.PlayerInstance.ReferenceHub.playerMovementSync.OverridePosition(position, 0, true);
+            fake_player.PlayerInstance.Rotations = Vector2.zero;           
         }
 
         public static T Create<T>(Vector3 position, RoleType role) where T : FakePlayer
@@ -164,35 +193,8 @@ namespace FakePlayerAPI
 
             T fake_player = obj.AddComponent<T>();
             processor._ipAddress = fake_player.GetIdentifier();
-
-            // We triggering JoinedEvent in RHub.Awake() -> our object got added to the unverified list 
-            // We dont trigger VerifiedEvent so we need to add our fake player to the player dictionary manually
-            // And actually finish the NPC initialization after that, otherwise PlayerInstance will be null and all shit is broken
-
-            Timing.CallDelayed(0.1f, () =>
-            {
-                try
-                {
-                    Player.UnverifiedPlayers.TryGetValue(ccm._hub, out Player ply_obj);
-                    Player.Dictionary.Add(obj, ply_obj);
-                    ply_obj.IsVerified = true;
-
-                    fake_player.FinishInitialization();
-
-                    fake_player.PlayerInstance.ReferenceHub.transform.localScale = Vector3.one;
-                    fake_player.PlayerInstance.SessionVariables.Add("IsFakePlayer", true);
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e);
-                }
-            });
-
-            fake_player.AttachedCoroutines.Add(Timing.CallDelayed(0.3f, () =>
-            {
-                fake_player.PlayerInstance.ReferenceHub.playerMovementSync.OverridePosition(position, 0, true);
-                fake_player.PlayerInstance.Rotations = Vector2.zero;
-            }));
+            
+            fake_player.AttachedCoroutines.Add(Timing.RunCoroutine(FinishInstanceCreationCoroutine(obj, position)));
 
             return fake_player;
         }

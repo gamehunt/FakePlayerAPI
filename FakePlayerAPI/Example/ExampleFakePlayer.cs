@@ -1,27 +1,32 @@
 ﻿using Exiled.API.Features;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FakePlayerAPI
 {
-    class TestFakePlayer : FakePlayer
+    class ExampleFakePlayer : FakePlayer
     {
-
+        private static int __counter = 0;
         public override bool DisplayInRA { get; set; } = true; 
 
         public override Plugin PluginInstance => Plugin.Instance;
 
         public override string GetIdentifier()
         {
-            return "TestFakePlayer";
+            return $"{PluginInstance.Name}_ExampleFakePlayer_{__counter}";
         }
 
         public override bool IsVisibleFor(Player ply)
         {
             return true;
+        }
+
+        public override void OnPostInitialization()
+        {
+            __counter++;
+        }
+
+        public override void OnPreInitialization()
+        {
+            
         }
     }
 }

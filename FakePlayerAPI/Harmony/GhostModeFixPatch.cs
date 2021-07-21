@@ -11,7 +11,6 @@ namespace FakePlayerAPI.Harmony
 {
     #pragma warning disable SA1313
     [HarmonyPatch(typeof(PlayerPositionManager), nameof(PlayerPositionManager.TransmitData))]
-    [HarmonyPriority(Priority.First)]
     internal class GhostModeFixPatch
     {
         private static readonly Vector3 GhostPos = Vector3.up * 6000f;

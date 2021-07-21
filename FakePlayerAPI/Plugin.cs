@@ -30,11 +30,11 @@ namespace FakePlayerAPI
                 {
                     if (bas.Name.Equals("TransmitData"))
                     {
-                        Exiled.Events.Events.DisabledPatchesHashSet.Add(bas);
+                        Evs.Events.DisabledPatchesHashSet.Add(bas);
                     }
                     else if (bas.DeclaringType.Name.Equals("RoundSummary") && bas.Name.Equals("Start"))
                     {
-                        Exiled.Events.Events.DisabledPatchesHashSet.Add(bas);
+                        Evs.Events.DisabledPatchesHashSet.Add(bas);
                     }
                 }
 
@@ -49,6 +49,8 @@ namespace FakePlayerAPI
                 Handlers.Server.RoundStarted += EventHandlers.OnRoundStart;
                 Handlers.Server.RoundEnded += EventHandlers.OnRoundEnd;
                 Handlers.Server.WaitingForPlayers += EventHandlers.OnWaitingForPlayers;
+               
+                Handlers.Player.Died += EventHandlers.OnDeath;
 
                 Log.Info($"{Name} plugin loaded. @gamehunt");
             }
@@ -66,6 +68,8 @@ namespace FakePlayerAPI
             Handlers.Server.RoundStarted -= EventHandlers.OnRoundStart;
             Handlers.Server.RoundEnded -= EventHandlers.OnRoundEnd;
             Handlers.Server.WaitingForPlayers -= EventHandlers.OnWaitingForPlayers;
+
+            Handlers.Player.Died -= EventHandlers.OnDeath;
 
             Instance = null;
             Harmony = null;
