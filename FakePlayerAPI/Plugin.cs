@@ -36,6 +36,10 @@ namespace FakePlayerAPI
                     {
                         Evs.Events.DisabledPatchesHashSet.Add(bas);
                     }
+                    else if (bas.Name.Equals("PlayEntranceAnnouncement"))
+                    {
+                        Exiled.Events.Events.DisabledPatchesHashSet.Add(bas);
+                    }
                 }
 
                 Evs.Events.Instance.ReloadDisabledPatches();
@@ -62,6 +66,10 @@ namespace FakePlayerAPI
 
         public override void OnDisabled()
         {
+            foreach (FakePlayer npc in FakePlayer.List)
+            {
+                npc.Kill();
+            }
 
             Harmony.UnpatchAll();
 

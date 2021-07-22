@@ -28,11 +28,6 @@ namespace FakePlayerAPI
         public Player PlayerInstance { get; set; }
 
         /// <summary>
-        /// Gets owner <see cref="Plugin"/> instance.
-        /// </summary>
-        public abstract Plugin PluginInstance { get; }
-
-        /// <summary>
         /// Gets debug identifier for <see cref="FakePlayer"/> instance.
         /// Should be unique!!!
         /// </summary>
@@ -75,7 +70,16 @@ namespace FakePlayerAPI
         /// Called after FinishInitialization(), when this instance fully initialized
         /// </summary>
         public abstract void OnPostInitialization();
+
+        /// <summary>
+        /// Called before PlayerInstance is set
+        /// </summary>
         public abstract void OnPreInitialization();
+
+        /// <summary>
+        /// Called when kill() called in this instance
+        /// </summary>
+        public abstract void OnDestroying();
 
         public void Kill()
         {
@@ -83,6 +87,7 @@ namespace FakePlayerAPI
             {
                 IsValid = false;
                 Log.Debug($"kill() called in FakePlayer {GetIdentifier()}", Plugin.Instance.Config.VerboseOutput);
+                OnDestroying();
                 Destroy(PlayerInstance.GameObject);
             }
         }
@@ -189,7 +194,7 @@ namespace FakePlayerAPI
             roles.MyColor = "red";
 
             NetworkServer.Spawn(obj);
-            PlayerManager.AddPlayer(obj, CustomNetworkManager.slots); //I'm not sure if I need this
+            PlayerManager.AddPlayer(obj, CustomNetworkManager.slots);
 
             T fake_player = obj.AddComponent<T>();
             processor._ipAddress = fake_player.GetIdentifier();

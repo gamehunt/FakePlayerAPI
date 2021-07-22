@@ -37,7 +37,7 @@ namespace FakePlayerAPI.Harmony
 
                     newInstructions.InsertRange(ccmGetOffset, new[]
                     {
-                        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Extensions), nameof(Extensions.IsFakePlayer), new System.Type[] { typeof(GameObject) })),
+                        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Extensions), nameof(Extensions.IsFakePlayer), new Type[] { typeof(GameObject) })),
                         new CodeInstruction(OpCodes.Brtrue_S, continueLabel),
                         new CodeInstruction(OpCodes.Ldloc_3, continueLabel),
                     });
