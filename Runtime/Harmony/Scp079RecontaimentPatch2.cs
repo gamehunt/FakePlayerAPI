@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using UnityEngine;
 
-namespace FakePlayerAPI.Harmony
+namespace FakePlayer.Runtime.Harmony
 {
     [HarmonyPatch(typeof(NineTailedFoxAnnouncer), nameof(NineTailedFoxAnnouncer.CheckForZombies))]
     internal class Scp079RecontaimentPatch2
@@ -11,7 +11,7 @@ namespace FakePlayerAPI.Harmony
             int num = 0;
             foreach (GameObject gameObject in PlayerManager.players)
             {
-                if (FakePlayer.Dictionary.ContainsKey(gameObject) && !FakePlayer.Dictionary[gameObject].AffectEndConditions)
+                if (API.FakePlayer.Dictionary.ContainsKey(gameObject) && !API.FakePlayer.Dictionary[gameObject].AffectEndConditions)
                 {
                     continue;
                 }

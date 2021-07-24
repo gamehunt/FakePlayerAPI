@@ -1,7 +1,7 @@
 ﻿using Exiled.API.Interfaces;
 using System.ComponentModel;
 
-namespace FakePlayerAPI
+namespace FakePlayer
 {
     public class Config : IConfig
     {

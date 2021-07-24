@@ -10,7 +10,7 @@ using System.Reflection.Emit;
 using System.Threading;
 using UnityEngine;
 
-namespace FakePlayerAPI.Harmony
+namespace FakePlayer.Runtime.Harmony
 {
     [HarmonyPatch(typeof(ServerConsole), nameof(ServerConsole.RefreshServerData))]
     internal class PlayerListCountFix
@@ -28,9 +28,9 @@ namespace FakePlayerAPI.Harmony
                 Log.Debug($"playerCountOffset1: {playerCountOffset1}");
 
                 newInstructions.InsertRange(playerCountOffset1, new[] {
-                    new CodeInstruction(OpCodes.Call    , AccessTools.PropertyGetter(typeof(FakePlayer), nameof(FakePlayer.Dictionary))),
-                    new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Dictionary<GameObject, FakePlayer>), nameof(Dictionary<GameObject, FakePlayer>.Keys))),
-                    new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Dictionary<GameObject, FakePlayer>.KeyCollection), nameof(Dictionary<GameObject, FakePlayer>.KeyCollection.Count))),
+                    new CodeInstruction(OpCodes.Call    , AccessTools.PropertyGetter(typeof(API.FakePlayer), nameof(API.FakePlayer.Dictionary))),
+                    new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Dictionary<GameObject, API.FakePlayer>), nameof(Dictionary<GameObject, API.FakePlayer>.Keys))),
+                    new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Dictionary<GameObject, API.FakePlayer>.KeyCollection), nameof(Dictionary<GameObject, API.FakePlayer>.KeyCollection.Count))),
                     new CodeInstruction(OpCodes.Sub),
                 });
             }
@@ -46,9 +46,9 @@ namespace FakePlayerAPI.Harmony
                 Log.Debug($"playerCountOffset2: {playerCountOffset2}");
 
                 newInstructions.InsertRange(playerCountOffset2, new[] {
-                    new CodeInstruction(OpCodes.Call    , AccessTools.PropertyGetter(typeof(FakePlayer), nameof(FakePlayer.Dictionary))),
-                    new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Dictionary<GameObject, FakePlayer>), nameof(Dictionary<GameObject, FakePlayer>.Keys))),
-                    new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Dictionary<GameObject, FakePlayer>.KeyCollection), nameof(Dictionary<GameObject, FakePlayer>.KeyCollection.Count))),
+                    new CodeInstruction(OpCodes.Call    , AccessTools.PropertyGetter(typeof(API.FakePlayer), nameof(API.FakePlayer.Dictionary))),
+                    new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Dictionary<GameObject, API.FakePlayer>), nameof(Dictionary<GameObject, API.FakePlayer>.Keys))),
+                    new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Dictionary<GameObject, API.FakePlayer>.KeyCollection), nameof(Dictionary<GameObject, API.FakePlayer>.KeyCollection.Count))),
                     new CodeInstruction(OpCodes.Sub),
                 });
             }

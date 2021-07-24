@@ -1,14 +1,14 @@
 ﻿using HarmonyLib;
 using UnityEngine;
 
-namespace FakePlayerAPI.Harmony
+namespace FakePlayer.Runtime.Harmony
 {
     [HarmonyPatch(typeof(PlayerMovementSync), nameof(PlayerMovementSync.OverridePosition))]
     internal class ScalePositionFix
     {
         private static bool Prefix(PlayerMovementSync __instance, Vector3 pos, float rot, bool forceGround)
         {
-            if (!FakePlayer.Dictionary.ContainsKey(__instance.gameObject))
+            if (!API.FakePlayer.Dictionary.ContainsKey(__instance.gameObject))
             {
                 return true;
             }

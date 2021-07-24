@@ -6,8 +6,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Scp096 = PlayableScps.Scp096;
+using FakePlayer.Extensions;
 
-namespace FakePlayerAPI.Harmony
+namespace FakePlayer.Runtime.Harmony
 {
     #pragma warning disable SA1313
     [HarmonyPatch(typeof(PlayerPositionManager), nameof(PlayerPositionManager.TransmitData))]
@@ -65,7 +66,7 @@ namespace FakePlayerAPI.Harmony
                             PlayerPositionData ppd = __instance._transmitBuffer[index];
 
                             Player currentTarget = Player.Get(players[index]);
-                            FakePlayer fakePlayer = null;
+                            API.FakePlayer fakePlayer = null;
 
                             if (players[index].IsFakePlayer())
                             {

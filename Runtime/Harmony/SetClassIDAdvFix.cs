@@ -1,7 +1,8 @@
 ﻿using Exiled.API.Features;
+using FakePlayer.Extensions;
 using HarmonyLib;
 
-namespace FakePlayerAPI.Harmony
+namespace FakePlayer.Runtime.Harmony
 {
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.SetClassIDAdv))]
     internal class SetClassIDAdvFix

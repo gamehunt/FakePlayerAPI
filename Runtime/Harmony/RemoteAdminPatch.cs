@@ -10,7 +10,7 @@ using System.Text;
 using UnityEngine;
 using static HarmonyLib.AccessTools;
 
-namespace FakePlayerAPI.Harmony
+namespace FakePlayer.Runtime.Harmony
 {
     [HarmonyPatch(typeof(CommandProcessor), nameof(CommandProcessor.ProcessQuery))]
     internal class RemoteAdminPatch
@@ -20,7 +20,7 @@ namespace FakePlayerAPI.Harmony
             try
             {
                 return string.IsNullOrEmpty(query[2]) ? null : Player.Get(int.Parse(query[2]))?.GameObject;
-            }catch(Exception e)
+            }catch(Exception)
             {
                 return null;
             }
@@ -41,7 +41,7 @@ namespace FakePlayerAPI.Harmony
             newInstructions.InsertRange(prefixIndex, new[]
             {
                  new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(ServerRoles), nameof(ServerRoles.gameObject))),
-                 new CodeInstruction(OpCodes.Call, Method(typeof(Extensions), nameof(Extensions.IsFakePlayer), new System.Type[] { typeof(GameObject) })),
+                 new CodeInstruction(OpCodes.Call, Method(typeof(Extensions.Extensions), nameof(Extensions.Extensions.IsFakePlayer), new System.Type[] { typeof(GameObject) })),
                  new CodeInstruction(OpCodes.Brfalse_S, skipStrLabel),
                  new CodeInstruction(OpCodes.Ldstr, "[FAKE] "),
                  new CodeInstruction(OpCodes.Stloc_S, 120),
@@ -81,11 +81,11 @@ namespace FakePlayerAPI.Harmony
                     {
                         new CodeInstruction(OpCodes.Stloc_S, goVar),
                         new CodeInstruction(OpCodes.Ldloc_S, goVar),
-                        new CodeInstruction(OpCodes.Call, Method(typeof(Extensions), nameof(Extensions.IsFakePlayer), new System.Type[] { typeof(GameObject) })),
+                        new CodeInstruction(OpCodes.Call, Method(typeof(Extensions.Extensions), nameof(Extensions.Extensions.IsFakePlayer), new System.Type[] { typeof(GameObject) })),
                         new CodeInstruction(OpCodes.Brfalse_S, skipLabel2),
                         new CodeInstruction(OpCodes.Ldloc_S, goVar),
-                        new CodeInstruction(OpCodes.Call, Method(typeof(Extensions), nameof(Extensions.AsFakePlayer), new System.Type[] { typeof(GameObject) })),
-                        new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(FakePlayer), nameof(FakePlayer.DisplayInRA))),
+                        new CodeInstruction(OpCodes.Call, Method(typeof(Extensions.Extensions), nameof(Extensions.Extensions.AsFakePlayer), new System.Type[] { typeof(GameObject) })),
+                        new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(API.FakePlayer), nameof(API.FakePlayer.DisplayInRA))),
                         new CodeInstruction(OpCodes.Brfalse_S, loopRetLabel),
                         new CodeInstruction(OpCodes.Ldloc_S, goVar).WithLabels(skipLabel2),
                     });
@@ -155,7 +155,7 @@ namespace FakePlayerAPI.Harmony
             newInstructions.InsertRange(ldstrColorIndex, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_S, 124),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Extensions), nameof(Extensions.IsFakePlayer), new Type[]{ typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Extensions.Extensions), nameof(Extensions.Extensions.IsFakePlayer), new Type[]{ typeof(GameObject) })),
                 new CodeInstruction(OpCodes.Brfalse_S, noteSkipLabel),
                 new CodeInstruction(OpCodes.Ldstr, "\n<color=#FEAF04>This is fake player instance created with FakePlayerAPI</color>"),
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(StringBuilder), nameof(StringBuilder.Append), new Type[]{ typeof(string)})),
@@ -166,8 +166,8 @@ namespace FakePlayerAPI.Harmony
                 new CodeInstruction(OpCodes.Pop),
                 new CodeInstruction(OpCodes.Ldloc_S, 135),
                 new CodeInstruction(OpCodes.Ldloc_S, 124),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Extensions), nameof(Extensions.AsFakePlayer), new Type[]{ typeof(GameObject) })),
-                new CodeInstruction(OpCodes.Callvirt, Method(typeof(FakePlayer), nameof(FakePlayer.GetIdentifier))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Extensions.Extensions), nameof(Extensions.Extensions.AsFakePlayer), new Type[]{ typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(API.FakePlayer), nameof(API.FakePlayer.GetIdentifier))),
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(StringBuilder), nameof(StringBuilder.Append), new Type[]{ typeof(string)})),
                 new CodeInstruction(OpCodes.Pop),
                 new CodeInstruction(OpCodes.Ldloc_S, 135),

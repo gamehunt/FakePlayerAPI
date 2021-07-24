@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Reflection.Emit;
 using UnityEngine;
 
-namespace FakePlayerAPI.Harmony
+namespace FakePlayer.Runtime.Harmony
 {
     [HarmonyPatch(typeof(NineTailedFoxAnnouncer), nameof(NineTailedFoxAnnouncer.Update))]
     public class Scp079RecontaimentPatch
@@ -34,11 +34,11 @@ namespace FakePlayerAPI.Harmony
                     newInstructions[skipLabel2Index + skipLabel2Offset] = newInstructions[skipLabel2Index + skipLabel2Offset].WithLabels(skipLabel2);
                     newInstructions.InsertRange(loopStartIndex1 + loopStartIndexOffset1, new[]
                     {
-                            new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Extensions), nameof(Extensions.IsFakePlayer), new System.Type[]{ typeof(GameObject) })),
+                            new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Extensions.Extensions), nameof(Extensions.Extensions.IsFakePlayer), new System.Type[]{ typeof(GameObject) })),
                             new CodeInstruction(OpCodes.Brfalse_S, skipLabel1),
                             new CodeInstruction(OpCodes.Ldloc_S, 14),
-                            new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Extensions), nameof(Extensions.AsFakePlayer), new System.Type[]{ typeof(GameObject) })),
-                            new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(FakePlayer), nameof(FakePlayer.AffectEndConditions))),
+                            new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Extensions.Extensions), nameof(Extensions.Extensions.AsFakePlayer), new System.Type[]{ typeof(GameObject) })),
+                            new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(API.FakePlayer), nameof(API.FakePlayer.AffectEndConditions))),
                             new CodeInstruction(OpCodes.Brtrue_S, skipLabel2),
                             new CodeInstruction(OpCodes.Ldloc_S, 14).WithLabels(skipLabel1),
                     });
@@ -64,11 +64,11 @@ namespace FakePlayerAPI.Harmony
                             {
                                 new CodeInstruction(OpCodes.Stloc_S, 14),
                                 new CodeInstruction(OpCodes.Ldloc_S, 14),
-                                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Extensions), nameof(Extensions.IsFakePlayer), new System.Type[]{ typeof(GameObject) })),
+                                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Extensions.Extensions), nameof(Extensions.Extensions.IsFakePlayer), new System.Type[]{ typeof(GameObject) })),
                                 new CodeInstruction(OpCodes.Brfalse_S, skipLabel3),
                                 new CodeInstruction(OpCodes.Ldloc_S, 14),
-                                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Extensions), nameof(Extensions.AsFakePlayer), new System.Type[]{ typeof(GameObject) })),
-                                new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(FakePlayer), nameof(FakePlayer.AffectEndConditions))),
+                                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Extensions.Extensions), nameof(Extensions.Extensions.AsFakePlayer), new System.Type[]{ typeof(GameObject) })),
+                                new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(API.FakePlayer), nameof(API.FakePlayer.AffectEndConditions))),
                                 new CodeInstruction(OpCodes.Brtrue_S, skipLabel4),
                                 new CodeInstruction(OpCodes.Ldloc_S, 14).WithLabels(skipLabel3),
                             });

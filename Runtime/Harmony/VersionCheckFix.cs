@@ -1,6 +1,6 @@
 ﻿using HarmonyLib;
 
-namespace FakePlayerAPI.Harmony
+namespace FakePlayer.Runtime.Harmony
 {
     [HarmonyPatch(typeof(VersionCheck), nameof(VersionCheck.Start))]
     internal class VersionCheckFix

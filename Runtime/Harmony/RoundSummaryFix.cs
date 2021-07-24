@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using UnityEngine;
 
-namespace FakePlayerAPI.Harmony
+namespace FakePlayer.Runtime.Harmony
 {
     [HarmonyPatch(typeof(RoundSummary), nameof(RoundSummary.Start))]
     internal class RoundSummaryFix
@@ -19,17 +19,17 @@ namespace FakePlayerAPI.Harmony
             RoundSummary roundSummary = instance;
             while (roundSummary != null)
             {
-                int count = PlayerManager.players.Count - FakePlayer.Dictionary.Keys.Count;
+                int count = PlayerManager.players.Count - API.FakePlayer.Dictionary.Keys.Count;
                 while (RoundSummary.RoundLock || !RoundSummary.RoundInProgress() || ((roundSummary._keepRoundOnOne && count < 2)))
                 {
-                    if (count == 0 && FakePlayer.Dictionary.Keys.Count > 0)
+                    if (count == 0 && API.FakePlayer.Dictionary.Keys.Count > 0)
                     {
-                        foreach (FakePlayer n in FakePlayer.List)
+                        foreach (API.FakePlayer n in API.FakePlayer.List)
                         {
                             n.Kill();
                         }
                     }
-                    count = PlayerManager.players.Count - FakePlayer.Dictionary.Keys.Count;
+                    count = PlayerManager.players.Count - API.FakePlayer.Dictionary.Keys.Count;
                     yield return 0.0f;
                 }
                 yield return 0.0f;
@@ -38,7 +38,7 @@ namespace FakePlayerAPI.Harmony
                 {
                     if (!(player == null))
                     {
-                        FakePlayer npc = FakePlayer.Get(player);
+                        API.FakePlayer npc = API.FakePlayer.Get(player);
                         if (npc == null || npc.AffectEndConditions)
                         {
                             CharacterClassManager component = player.GetComponent<CharacterClassManager>();

@@ -5,8 +5,9 @@ using Exiled.Events.Handlers;
 using HarmonyLib;
 using NorthwoodLib.Pools;
 using Respawning.NamingRules;
+using FakePlayer.Extensions;
 
-namespace FakePlayerAPI.Harmony
+namespace FakePlayer.Runtime.Harmony
 {
     [HarmonyPatch(typeof(NineTailedFoxNamingRule), nameof(NineTailedFoxNamingRule.PlayEntranceAnnouncement))]
 	internal class EntranceAnnouncementFix

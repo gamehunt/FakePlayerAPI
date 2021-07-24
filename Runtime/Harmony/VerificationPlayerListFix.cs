@@ -11,7 +11,7 @@ using System.Reflection.Emit;
 using System.Threading;
 using UnityEngine;
 
-namespace FakePlayerAPI.Harmony
+namespace FakePlayer.Runtime.Harmony
 {
     [HarmonyPatch(typeof(ServerConsole), nameof(ServerConsole.FixedUpdate))]
     internal class VerificationPlayerListFix
@@ -37,7 +37,7 @@ namespace FakePlayerAPI.Harmony
 
                     newInstructions.InsertRange(ccmGetOffset, new[]
                     {
-                        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Extensions), nameof(Extensions.IsFakePlayer), new Type[] { typeof(GameObject) })),
+                        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(FakePlayer.Extensions.Extensions), nameof(FakePlayer.Extensions.Extensions.IsFakePlayer), new Type[] { typeof(GameObject) })),
                         new CodeInstruction(OpCodes.Brtrue_S, continueLabel),
                         new CodeInstruction(OpCodes.Ldloc_3, continueLabel),
                     });
