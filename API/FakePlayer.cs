@@ -128,7 +128,7 @@ namespace FakePlayer
                 Dictionary.Add(gameObject, this);
             }
 
-            private static IEnumerator<float> FinishInstanceCreationCoroutine(GameObject obj, Vector3 position)
+            private static IEnumerator<float> FinishInstanceCreationCoroutine(GameObject obj, Vector3 position, Vector3 scale)
             {
                 yield return Timing.WaitForSeconds(0.1f);
                 CharacterClassManager ccm = obj.GetComponent<CharacterClassManager>();
@@ -150,7 +150,7 @@ namespace FakePlayer
                     ply_obj.ReferenceHub.weaponManager.CallCmdChangeModPreferences(prefs);
 
                     fake_player.PlayerInstance = ply_obj;
-                    fake_player.PlayerInstance.ReferenceHub.transform.localScale = Vector3.one;
+                    fake_player.PlayerInstance.ReferenceHub.transform.localScale = scale;
                     fake_player.PlayerInstance.SessionVariables.Add("IsFakePlayer", true);
                     fake_player.IsValid = true;
 
@@ -169,12 +169,12 @@ namespace FakePlayer
                 fake_player.PlayerInstance.Rotations = Vector2.zero;
             }
 
-            public static T Create<T>(Vector3 position, RoleType role) where T : FakePlayer
+            public static T Create<T>(Vector3 position, Vector3 scale, RoleType role) where T : FakePlayer
             {
                 GameObject obj = Instantiate(NetworkManager.singleton.spawnPrefabs.FirstOrDefault(p => p.gameObject.name == "Player"));
                 CharacterClassManager ccm = obj.GetComponent<CharacterClassManager>();
 
-                obj.transform.localScale = Vector3.one;
+                obj.transform.localScale = scale;
                 obj.transform.position = position;
 
                 QueryProcessor processor = obj.GetComponent<QueryProcessor>();
@@ -200,7 +200,7 @@ namespace FakePlayer
                 T fake_player = obj.AddComponent<T>();
                 processor._ipAddress = fake_player.GetIdentifier();
 
-                fake_player.AttachedCoroutines.Add(Timing.RunCoroutine(FinishInstanceCreationCoroutine(obj, position)));
+                fake_player.AttachedCoroutines.Add(Timing.RunCoroutine(FinishInstanceCreationCoroutine(obj, position, scale)));
 
                 return fake_player;
             }
