@@ -1,6 +1,6 @@
 ﻿using HarmonyLib;
 
-namespace FakePlayer.Runtime.Harmony
+namespace FakePlayers.Runtime.Harmony
 {
     [HarmonyPatch(typeof(Hints.HintDisplay), nameof(Hints.HintDisplay.Show))]
     public class ShowHintFix

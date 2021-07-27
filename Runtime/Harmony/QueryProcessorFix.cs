@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace FakePlayer.Runtime.Harmony
+namespace FakePlayers.Runtime.Harmony
 {
     [HarmonyPatch(typeof(QueryProcessor), nameof(QueryProcessor.Start))]
     internal class QueryProcessorFix

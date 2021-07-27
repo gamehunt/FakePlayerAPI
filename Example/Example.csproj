@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
-    <AssemblyName>0FakePlayers.Runtime</AssemblyName>
-    <RootNamespace>FakePlayers.Runtime</RootNamespace>
+    <AssemblyName>FakePlayers.Example</AssemblyName>
+    <RootNamespace>FakePlayers.Example</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -47,6 +47,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\API\API.csproj" />
+    <ProjectReference Include="..\Runtime\Runtime.csproj" />
   </ItemGroup>
 
 </Project>

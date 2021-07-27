@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using UnityEngine;
 
-namespace FakePlayer.Runtime.Harmony
+namespace FakePlayers.Runtime.Harmony
 {
     [HarmonyPatch(typeof(NineTailedFoxAnnouncer), nameof(NineTailedFoxAnnouncer.CheckForZombies))]
     internal class Scp079RecontaimentPatch2

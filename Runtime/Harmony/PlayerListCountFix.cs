@@ -10,7 +10,7 @@ using System.Reflection.Emit;
 using System.Threading;
 using UnityEngine;
 
-namespace FakePlayer.Runtime.Harmony
+namespace FakePlayers.Runtime.Harmony
 {
     [HarmonyPatch(typeof(ServerConsole), nameof(ServerConsole.RefreshServerData))]
     internal class PlayerListCountFix

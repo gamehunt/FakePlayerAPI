@@ -1,6 +1,6 @@
 ﻿using HarmonyLib;
 
-namespace FakePlayer.Runtime.Harmony
+namespace FakePlayers.Runtime.Harmony
 {
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.Init))]
     internal class VerificationFix

@@ -1,17 +1,15 @@
 ﻿using Exiled.API.Features;
 using HarmonyLib;
-using Mirror.LiteNetLib4Mirror;
-using NorthwoodLib;
 using NorthwoodLib.Pools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Threading;
+using FakePlayers.API;
 using UnityEngine;
 
-namespace FakePlayer.Runtime.Harmony
+namespace FakePlayers.Runtime.Harmony
 {
     [HarmonyPatch(typeof(ServerConsole), nameof(ServerConsole.FixedUpdate))]
     internal class VerificationPlayerListFix
@@ -37,9 +35,9 @@ namespace FakePlayer.Runtime.Harmony
 
                     newInstructions.InsertRange(ccmGetOffset, new[]
                     {
-                        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(FakePlayer.Extensions.Extensions), nameof(FakePlayer.Extensions.Extensions.IsFakePlayer), new Type[] { typeof(GameObject) })),
+                        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Extensions.Extensions), nameof(Extensions.Extensions.IsFakePlayer), new Type[] { typeof(GameObject) })),
                         new CodeInstruction(OpCodes.Brtrue_S, continueLabel),
-                        new CodeInstruction(OpCodes.Ldloc_3, continueLabel),
+                        new CodeInstruction(OpCodes.Ldloc_3),
                     });
                 }
                 else

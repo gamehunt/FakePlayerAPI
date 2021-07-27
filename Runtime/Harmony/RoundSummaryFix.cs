@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using UnityEngine;
 
-namespace FakePlayer.Runtime.Harmony
+namespace FakePlayers.Runtime.Harmony
 {
     [HarmonyPatch(typeof(RoundSummary), nameof(RoundSummary.Start))]
     internal class RoundSummaryFix

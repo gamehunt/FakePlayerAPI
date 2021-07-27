@@ -1,10 +1,10 @@
 ﻿using Exiled.API.Features;
-using FakePlayer.Extensions;
+using FakePlayers.Extensions;
 using HarmonyLib;
 using System;
 using UnityEngine;
 
-namespace FakePlayer.Runtime.Harmony
+namespace FakePlayers.Runtime.Harmony
 {
     [HarmonyPatch(typeof(Player), nameof(Player.Scale), MethodType.Setter)]
     internal class SetScaleFix

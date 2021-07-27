@@ -1,6 +1,6 @@
 ﻿using HarmonyLib;
 
-namespace FakePlayer.Runtime.Harmony
+namespace FakePlayers.Runtime.Harmony
 {
     [HarmonyPatch(typeof(MicroHID), nameof(MicroHID.UpdateServerside))]
     public class MicroHIDFix

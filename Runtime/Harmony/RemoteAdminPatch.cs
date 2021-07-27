@@ -10,7 +10,7 @@ using System.Text;
 using UnityEngine;
 using static HarmonyLib.AccessTools;
 
-namespace FakePlayer.Runtime.Harmony
+namespace FakePlayers.Runtime.Harmony
 {
     [HarmonyPatch(typeof(CommandProcessor), nameof(CommandProcessor.ProcessQuery))]
     internal class RemoteAdminPatch

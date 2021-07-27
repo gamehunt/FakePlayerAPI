@@ -1,31 +1,28 @@
 using Exiled.API.Features;
 using UnityEngine;
 
-namespace FakePlayer
+namespace FakePlayers.Extensions
 {
-    namespace Extensions
+    public static class Extensions
     {
-        public static class Extensions
+        public static bool IsFakePlayer(this GameObject p)
         {
-            public static bool IsFakePlayer(this GameObject p)
-            {
-                return API.FakePlayer.Dictionary.ContainsKey(p);
-            }
+            return API.FakePlayer.Dictionary.ContainsKey(p);
+        }
 
-            public static bool IsFakePlayer(this Player p)
-            {
-                return p.GameObject.IsFakePlayer();
-            }
+        public static bool IsFakePlayer(this Player p)
+        {
+            return p.GameObject.IsFakePlayer();
+        }
 
-            public static API.FakePlayer AsFakePlayer(this Player p)
-            {
-                return p.IsFakePlayer() ? API.FakePlayer.Dictionary[p.GameObject] : null;
-            }
+        public static API.FakePlayer AsFakePlayer(this Player p)
+        {
+            return p.IsFakePlayer() ? API.FakePlayer.Dictionary[p.GameObject] : null;
+        }
 
-            public static API.FakePlayer AsFakePlayer(this GameObject p)
-            {
-                return p.IsFakePlayer() ? API.FakePlayer.Dictionary[p] : null;
-            }
+        public static API.FakePlayer AsFakePlayer(this GameObject p)
+        {
+            return p.IsFakePlayer() ? API.FakePlayer.Dictionary[p] : null;
         }
     }
 }

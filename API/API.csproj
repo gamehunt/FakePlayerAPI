@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
-    <AssemblyName>FakePlayer.API</AssemblyName>
+    <AssemblyName>FakePlayers.API</AssemblyName>
+    <RootNamespace>FakePlayers.API</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
