@@ -1,7 +1,9 @@
-﻿using Exiled.Events.EventArgs;
+﻿using Exiled.API.Enums;
+using Exiled.Events.EventArgs;
 using Exiled.Events.Handlers;
 using GameCore;
 using HarmonyLib;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -14,24 +16,13 @@ namespace FakePlayers.Runtime.Harmony
     {
         private static readonly MethodInfo CustomProcess = SymbolExtensions.GetMethodInfo(() => Process(null));
 
-        private static IEnumerator<float> Process(RoundSummary instance)
+        private static IEnumerator<float> Process(RoundSummary roundSummary)
         {
-            RoundSummary roundSummary = instance;
             while (roundSummary != null)
             {
                 int count = PlayerManager.players.Count - API.FakePlayer.Dictionary.Keys.Count;
-                while (RoundSummary.RoundLock || !RoundSummary.RoundInProgress() || ((roundSummary._keepRoundOnOne && count < 2)))
-                {
-                    if (count == 0 && API.FakePlayer.Dictionary.Keys.Count > 0)
-                    {
-                        foreach (API.FakePlayer n in API.FakePlayer.List)
-                        {
-                            n.Kill();
-                        }
-                    }
-                    count = PlayerManager.players.Count - API.FakePlayer.Dictionary.Keys.Count;
+                while (RoundSummary.RoundLock || !RoundSummary.RoundInProgress() || (roundSummary._keepRoundOnOne && count < 2))
                     yield return 0.0f;
-                }
                 yield return 0.0f;
                 RoundSummary.SumInfo_ClassList newList = default;
                 foreach (GameObject player in PlayerManager.players)
@@ -88,7 +79,7 @@ namespace FakePlayers.Runtime.Harmony
 
                 if (newList.class_ds == 0 && num1 == 0)
                 {
-                    roundSummary._roundEnded = true;
+                    roundSummary.RoundEnded = true;
                 }
                 else
                 {
@@ -101,27 +92,27 @@ namespace FakePlayers.Runtime.Harmony
                         ++num6;
                     if (num6 <= 1)
                     {
-                        roundSummary._roundEnded = true;
+                        roundSummary.RoundEnded = true;
                     }
                 }
 
-                var endingRoundEventArgs = new EndingRoundEventArgs(Exiled.API.Enums.LeadingTeam.Draw, newList, roundSummary._roundEnded);
+                EndingRoundEventArgs endingRoundEventArgs = new EndingRoundEventArgs(LeadingTeam.Draw, newList, roundSummary.RoundEnded);
 
                 if (num1 > 0)
                 {
                     if (RoundSummary.escaped_ds == 0 && RoundSummary.escaped_scientists != 0)
-                        endingRoundEventArgs.LeadingTeam = Exiled.API.Enums.LeadingTeam.FacilityForces;
+                        endingRoundEventArgs.LeadingTeam = LeadingTeam.FacilityForces;
                 }
                 else
                 {
-                    endingRoundEventArgs.LeadingTeam = RoundSummary.escaped_ds != 0 ? Exiled.API.Enums.LeadingTeam.ChaosInsurgency : Exiled.API.Enums.LeadingTeam.Anomalies;
+                    endingRoundEventArgs.LeadingTeam = RoundSummary.escaped_ds != 0 ? LeadingTeam.ChaosInsurgency : LeadingTeam.Anomalies;
                 }
 
                 Server.OnEndingRound(endingRoundEventArgs);
 
-                roundSummary._roundEnded = endingRoundEventArgs.IsRoundEnded && endingRoundEventArgs.IsAllowed;
+                roundSummary.RoundEnded = endingRoundEventArgs.IsRoundEnded && endingRoundEventArgs.IsAllowed;
 
-                if (roundSummary._roundEnded)
+                if (roundSummary.RoundEnded)
                 {
                     FriendlyFireConfig.PauseDetector = true;
                     string str = "Round finished! Anomalies: " + num3 + " | Chaos: " + num2 + " | Facility Forces: " + num1 + " | D escaped percentage: " + num4 + " | S escaped percentage: : " + num5;
@@ -136,7 +127,7 @@ namespace FakePlayers.Runtime.Harmony
                     {
                         newList.scps_except_zombies -= newList.zombies;
 
-                        var roundEndedEventArgs = new RoundEndedEventArgs(endingRoundEventArgs.LeadingTeam, newList, timeToRoundRestart);
+                        RoundEndedEventArgs roundEndedEventArgs = new RoundEndedEventArgs(endingRoundEventArgs.LeadingTeam, newList, timeToRoundRestart);
 
                         Server.OnRoundEnded(roundEndedEventArgs);
 
@@ -168,7 +159,18 @@ namespace FakePlayers.Runtime.Harmony
                     }
                     else
                     {
-                        yield return new CodeInstruction(OpCodes.Call, CustomProcess);
+                        yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(RoundSummaryFix), nameof(Process)));
+                        yield return new CodeInstruction(OpCodes.Ldarg_0);
+                        yield return new CodeInstruction(OpCodes.Call, AccessTools.FirstMethod(typeof(MECExtensionMethods2), (m) =>
+                        {
+                            Type[] generics = m.GetGenericArguments();
+                            ParameterInfo[] paramseters = m.GetParameters();
+                            return m.Name == "CancelWith"
+                            && generics.Length == 1
+                            && paramseters.Length == 2
+                            && paramseters[0].ParameterType == typeof(IEnumerator<float>)
+                            && paramseters[1].ParameterType == generics[0];
+                        }).MakeGenericMethod(typeof(RoundSummary)));
                     }
                 }
                 else

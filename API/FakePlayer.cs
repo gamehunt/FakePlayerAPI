@@ -150,13 +150,13 @@ namespace FakePlayers.API
 
                 ply_obj.IsVerified = true;
 
-                string prefs = "";
+               /* string prefs = "";
                 for (int i = 0; i < ply_obj.ReferenceHub.weaponManager.weapons.Length; i++)
                 {
                     prefs += i == 0 ? "0:0:0" : "#0:0:0";
                 }
 
-                ply_obj.ReferenceHub.weaponManager.CallCmdChangeModPreferences(prefs);
+                ply_obj.ReferenceHub.weaponManager.CallCmdChangeModPreferences(prefs); */
 
                 fake_player.PlayerInstance = ply_obj;
                 fake_player.PlayerInstance.ReferenceHub.transform.localScale = scale;
@@ -180,7 +180,7 @@ namespace FakePlayers.API
 
         public static T Create<T>(Vector3 position, Vector3 scale, RoleType role, bool processEvents) where T : FakePlayer
         {
-            GameObject obj = Instantiate(NetworkManager.singleton.spawnPrefabs.FirstOrDefault(p => p.gameObject.name == "Player"));
+            GameObject obj = Instantiate(NetworkManager.singleton.playerPrefab);
             CharacterClassManager ccm = obj.GetComponent<CharacterClassManager>();
 
             obj.transform.localScale = scale;

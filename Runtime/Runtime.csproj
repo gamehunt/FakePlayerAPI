@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
@@ -22,10 +22,10 @@
       <HintPath>..\..\..\SLServer\SCPSL_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\SLServer\SCPSL_Data\Managed\publicized_assemblies\Assembly-CSharp_publicized.dll</HintPath>
+      <HintPath>..\..\..\SLServer\SCPSL_Data\Managed\Assembly-CSharp-Publicized.dll</HintPath>
     </Reference>
     <Reference Include="Mirror">
-      <HintPath>..\..\NPCS\NPCS\bin\Release\net472\Mirror_publicized.dll</HintPath>
+      <HintPath>..\..\..\AssemblyPublicizer\publicized_assemblies\Mirror_publicized.dll</HintPath>
     </Reference>
     <Reference Include="NorthwoodLib">
       <HintPath>..\..\NPCS\NPCS\bin\Release\net472\NorthwoodLib.dll</HintPath>
@@ -42,7 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="EXILED" Version="2.11.1" />
+    <PackageReference Include="EXILED" Version="3.0.0-alpha.53" />
   </ItemGroup>
 
   <ItemGroup>

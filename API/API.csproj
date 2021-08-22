@@ -14,26 +14,32 @@
     <Reference Include="0Harmony">
       <HintPath>..\..\NPCS\NPCS\bin\Release\net472\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\NPCS\NPCS\bin\Release\net472\Assembly-CSharp_publicized.dll</HintPath>
-    </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\..\NPCS\NPCS\bin\Release\net472\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\..\SLServer\SCPSL_Data\Managed\Assembly-CSharp-Publicized.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.API">
       <HintPath>..\..\..\AssemblyPublicizer\publicized_assemblies\Exiled.API_publicized.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Events">
-      <HintPath>..\..\NPCS\NPCS\bin\Release\net472\Exiled.Events.dll</HintPath>
+    <Reference Include="Exiled.CreditTags">
+      <HintPath>..\..\..\..\AppData\Roaming\EXILED\Plugins\Exiled.CreditTags.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Loader">
-      <HintPath>..\..\NPCS\NPCS\bin\Release\net472\Exiled.Loader.dll</HintPath>
+    <Reference Include="Exiled.CustomItems">
+      <HintPath>..\..\..\..\AppData\Roaming\EXILED\Plugins\Exiled.CustomItems.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.Events">
+      <HintPath>..\..\..\..\AppData\Roaming\EXILED\Plugins\Exiled.Events.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.Permissions">
-      <HintPath>..\..\NPCS\NPCS\bin\Release\net472\Exiled.Permissions.dll</HintPath>
+      <HintPath>..\..\..\..\AppData\Roaming\EXILED\Plugins\Exiled.Permissions.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.Updater">
+      <HintPath>..\..\..\..\AppData\Roaming\EXILED\Plugins\Exiled.Updater.dll</HintPath>
     </Reference>
     <Reference Include="Mirror">
-      <HintPath>..\..\NPCS\NPCS\bin\Release\net472\Mirror_publicized.dll</HintPath>
+      <HintPath>..\..\..\AssemblyPublicizer\publicized_assemblies\Mirror_publicized.dll</HintPath>
     </Reference>
     <Reference Include="NorthwoodLib">
       <HintPath>..\..\NPCS\NPCS\bin\Release\net472\NorthwoodLib.dll</HintPath>

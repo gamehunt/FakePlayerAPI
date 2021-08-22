@@ -15,6 +15,11 @@ namespace FakePlayers.Extensions
             return p.GameObject.IsFakePlayer();
         }
 
+        public static bool IsFakePlayer(this ReferenceHub p)
+        {
+            return p.gameObject.IsFakePlayer();
+        }
+
         public static API.FakePlayer AsFakePlayer(this Player p)
         {
             return p.IsFakePlayer() ? API.FakePlayer.Dictionary[p.GameObject] : null;
@@ -23,6 +28,11 @@ namespace FakePlayers.Extensions
         public static API.FakePlayer AsFakePlayer(this GameObject p)
         {
             return p.IsFakePlayer() ? API.FakePlayer.Dictionary[p] : null;
+        }
+
+        public static API.FakePlayer AsFakePlayer(this ReferenceHub p)
+        {
+            return AsFakePlayer(p.gameObject);
         }
     }
 }

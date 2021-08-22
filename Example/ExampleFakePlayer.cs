@@ -7,7 +7,7 @@ namespace FakePlayers.Example
         private static int __counter = 0;
 
         public override bool AffectEndConditions { get; set; } = false;
-        public override bool DisplayInRA { get; set; } = true;
+        public override bool DisplayInRA { get; set; } = false;
 
         public override string GetIdentifier()
         {

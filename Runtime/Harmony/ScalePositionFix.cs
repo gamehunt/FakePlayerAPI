@@ -19,7 +19,6 @@ namespace FakePlayers.Runtime.Harmony
                 pos = new Vector3(pos.x, pos.y - (1f - __instance._hub.transform.localScale.y) * Plugin.Instance.Config.FakePlayerSizePositionMultiplier, pos.z);
             }
             __instance.ForcePosition(pos);
-            __instance.PlayScp173SoundIfTeleported();
             return false;
         }
     }

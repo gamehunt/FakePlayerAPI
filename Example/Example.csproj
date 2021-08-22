@@ -42,7 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="EXILED" Version="2.11.1" />
+    <PackageReference Include="EXILED" Version="3.0.0-alpha.53" />
   </ItemGroup>
 
   <ItemGroup>
